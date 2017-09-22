@@ -1,0 +1,180 @@
+<!DOCTYPE HTML>
+<html>
+   <head>
+       <link rel="stylesheet" type="text/css" href="stylev2.css">
+       
+        <script type="text/javascript" src="gamev2.js"></script>
+    	<script type="text/javascript">
+			
+            
+            
+            var canvas;
+            var canvas2dContext;
+            
+            var cardPairs;
+            
+            var gameController;
+            
+            //keyboard
+            
+            //mouse
+            var mouse_x, mouse_y;
+            var mouse_down;
+            
+            function init(){
+                
+                this.cardPairs = 9;
+                this.gameController = new MemoryGame();
+               
+                this.gameController.connectContainers(
+                    document.getElementById('current_player_container'),
+                    document.getElementById('player_1_points'),
+                    document.getElementById('player_2_points'),
+                    document.getElementById('popup_container')
+                );               
+ 
+                
+                
+                var players = [
+                    new MemoryPlayer("player 1"),     
+                    new MemoryPlayer("player 2")
+                ];
+                
+                this.gameController.setPlayers(players);
+                
+                this.loadCards(this.cardPairs);
+                //this.loadImages();
+                                
+                
+                
+                this.gameController.init(5,5);
+                
+                this.interval = setInterval(gameUpdate, 50);
+              
+                //draw(10,10);              
+                
+            }         
+
+            
+
+            
+            
+            function gameUpdate(){
+                                    
+                
+                var curGameEntry = this.gameController;
+                                
+                if(curGameEntry){
+                                    
+                    if(curGameEntry.isFinished()){
+
+                        currentGame++;
+                        if(currentGame > this.games.length){
+                            return;
+                        }
+                        this.gameController.init(this.canvas.width, this.canvas.height);
+                    }
+                    else{
+                        
+                        curGameEntry.update();
+                    }
+                }
+                else{
+                    alert("whoops");
+                }
+                
+                
+            }
+            
+
+
+            
+            function loadCards(count){
+                
+                var container = document.getElementById('card_container');
+                var controller = this.gameController;
+                
+                var cards = controller.initCards(this.cardPairs);
+                var board = controller.generateBoard();
+                
+                
+                for (var i = 0; i < board.length; i++) {
+                    
+                        var cur_card = cards[board[i]];
+                    
+                        var card_0_elem = document.createElement("div");
+                        card_0_elem.id = cur_card.elementID; 
+                        card_0_elem.className = 'card';
+                        card_0_elem.onclick = function() {
+                           
+                            controller.clickCard(this.id);
+                        };       
+                    
+                        container.appendChild(card_0_elem);
+                        cur_card.elementReference = card_0_elem;
+                        cur_card.openImage = './images/'+cur_card.elementID+'.png';
+                    
+                }
+                
+        }
+            
+            
+        function mainBodyClick(e) {
+            var targ;
+            if (!e) {
+                var e = window.event;
+            }
+            if (e.target) {
+                targ=e.target;
+            } else if (e.srcElement) {
+                targ=e.srcElement;
+            }
+            var tname;
+            tname = targ.tagName;
+            
+            this.gameController.bodyClick();
+        }
+            
+		</script>
+      
+      
+   </head>
+   <body onload="init();" onmousedown="mainBodyClick(event)">
+        <center>
+           <div id="game_container">
+               
+               <div id="player_info_container">
+                    <div id="current_player_container"></div>
+                   
+                    <div id="player_points_container">
+                        <div id="player_1_points"></div>
+                        <div id="player_2_points"></div>
+                    </div>
+
+                    <div style="display:none" id="debugInfoContainer"></div>
+                         
+               </div>
+               
+               <div id="card_container">
+               </div>
+               
+               
+                <div id="popup_container" style="display:none;" >
+                   Hallo Welt
+               </div>
+
+           </div>
+
+       </center>
+                   
+       <div id="imagebox" style="display:none;" >         
+            <img class="card" id="img_card_back" src="./images/card_back.png">
+            <img class="bubble" id="img_bubble_left" src="./images/bubble_left.png">
+            <img class="bubble" id="img_bubble_right" src="./images/bubble_right.png">
+        </div>
+       
+       
+
+   </body>
+    
+</html>
