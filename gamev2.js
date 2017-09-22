@@ -220,7 +220,14 @@ function MemoryGame() {
         
         
        if(this.promptNextPlayer){
-           this.showPopUp("Next player");
+           //wait for animations
+           
+           var tRef = this;
+           
+           //setTimeout(function(){
+            
+                tRef.showPopUp("Next player");
+            //}, 1000);
        }
         
        if(this.selectedCard1 != null && this.selectedCard2 != null){
@@ -394,8 +401,17 @@ function MemoryCard (index, partIndex) {
         this.opened = true;
         //this.open_transition = true;
         
-        this.elementReference.style.backgroundImage = "url('"+this.openImage+"')";
         
+        this.elementReference.style.transform = "rotateY(180deg)";
+
+        var elt = this.elementReference;
+        var imgRef = this.openImage;
+        
+        setTimeout(function(){
+            
+                elt.style.backgroundImage = "url('"+imgRef+"')";
+            }, 
+           350); //same time as animation length
         
         //alert("open card "+this.elementID);
     }

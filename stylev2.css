@@ -13,11 +13,17 @@ body{
     background-image: url("./images/card_back.png");
     width: 180px;
     height: 180px;
-    margin: 8px;
+    margin: 7px;
     box-shadow: 4px 4px 7px grey;
     
     float:left;
+    
+      transition: 1.0s;
+      
 }
+
+
+
 
 @font-face {
     font-family: 'beauty_and_the_beastregular';
@@ -39,7 +45,7 @@ body{
 
 
 #card_container{
-        
+    perspective: 1000px;
     margin-left: 10px;
 }
 
